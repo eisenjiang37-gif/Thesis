@@ -1,0 +1,80 @@
+\documentclass[a4paper, twoside, thesisonly, noblind]{iseebachelor}
+%-----------------------------------------------------------------
+% global information
+%-----------------------------------------------------------------
+\newcommand{\StudentName}{蒋子涵}
+\newcommand{\StudentID}{3220104863}
+\newcommand{\Supervisor}{冉立新}
+\newcommand{\Grade}{2022级}
+\newcommand{\Major}{电子科学与技术}
+\newcommand{\College}{信息与电子工程学院}
+\newcommand{\ProjectName}{面向手势识别的Doppler雷达传感技术}
+% 如果你的课题题目很长，请在下面手动分行用于封面的显示，同时在cls文件中切换封面题目的显示方式
+\newcommand{\ProjectNameLineOne}{面向手势识别的}
+\newcommand{\ProjectNameLineTwo}{Doppler雷达传感技术}
+%-----------------------------------------------------------------
+% main doc
+%-----------------------------------------------------------------
+\setlength{\parskip}{0pt}
+\begin{document}
+% 目录
+\makecover
+\startcontents[thesis]
+\startcontents[threeinone]
+% 手动向三合一目录添加第二部分条目（thesisonly模式下3in1内容为外部PDF）
+\addcontentsline{ptc-threeinone}{trsectionnoiddot}{第二部分\hspace{1em}文献综述和开题报告}
+\addcontentsline{ptc-threeinone}{trsection}{一、文献综述}
+\addcontentsline{ptc-threeinone}{trsection}{二、开题报告}
+\addcontentsline{ptc-threeinone}{trsection}{三、外文翻译}
+\addcontentsline{ptc-threeinone}{trsection}{四、外文原文}
+\addcontentsline{ptc-threeinone}{trsectionnoiddot}{指导教师对文献综述和开题报告具体内容要求}
+\addcontentsline{ptc-threeinone}{trsectionnoiddot}{《浙江大学本科生文献综述和开题报告考核表》}
+\stopcontents[threeinone]
+% 原创性声明
+\pagestyle{infoPage}
+\include{doc_thesis/contents/01_Statement}
+% 致谢
+\include{doc_thesis/contents/02_Acknowledgments}
+% 摘要
+\include{doc_thesis/contents/03_Abstract}
+% 目录页
+\newpage
+\pagestyle{indexPage}
+\ZJUPrintCombinedTOC
+% \vspace{12pt}\noindent {\CJKfamily{simhei}\fontsize{12bp}{18bp}\bfseries \hspace{0.36em}《浙江大学本科生文献综述和开题报告考核表》}\vspace{6pt}
+% 正文字体设置
+\globalmainfont
+% 正文部分
+\includepdf[pages=-]{doc_thesis/contents/Part1_Pagination.pdf}
+\pagestyle{mainPage}
+\ZJUSetupThesisHeading
+\include{doc_thesis/contents/04_Main}
+% 任务书
+\thispagestyle{blankPage}
+\include{doc_thesis/contents/05_Task}
+\thispagestyle{blankPage}
+\include{doc_thesis/contents/06_Eval}
+\stopcontents[thesis]
+\includepdf[pages=-]{doc_3in1/3in1.pdf}
+%-----------------------------------------------------------------
+% main doc for 3-in-1 part
+%-----------------------------------------------------------------
+\ifthenelse{\boolean{myfull}}{
+  \clearpage
+  \resumecontents[threeinone]
+  \begin{ThreeInOnePart}
+    \includepdf[pages=-]{doc_thesis/contents/Part2_Pagination.pdf}
+    \globalmainfont
+    \newpage
+    \thispagestyle{trinfoPage}
+    \include{doc_3in1/contents/00_Info}
+    \pagestyle{mainPage}
+    \include{doc_3in1/contents/01_Review}
+    \include{doc_3in1/contents/02_Report}
+    \include{doc_3in1/contents/03_Translate}
+    \include{doc_3in1/contents/04_TransOriginal}
+    \include{doc_3in1/contents/05_Eval}
+  \end{ThreeInOnePart}
+  \stopcontents[threeinone]
+}{}
+\end{document}
