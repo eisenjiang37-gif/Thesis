@@ -1,277 +1,55 @@
 \cleardoublepage
 \section{开题报告}
 
+\bullshit
+
 \subsection{问题提出的背景}
 
+\bullshit
+
 \subsubsection{背景介绍}
-在物联网（IoT）与泛在计算渗透社会各层级的当下，人机交互（HCI）正经历从"人适应机器"向"机器理解人"的本质演进。传统的触控交互与外设交互虽技术成熟，但在医疗手术室、车载驾驶舱及工业自动化等高标准场景中，物理接触不仅存在卫生风险，更受限于操作空间与视觉注意力的分配问题。随着AR/VR及智能座舱技术的普及，市场亟需一种高自由度、低认知负担且符合自然直觉的非接触式交互方案。手势作为人类最自然的表达载体，已成为实现"无感感知"交互的核心突破口。
 
-当前手势识别的技术栈呈现三足鼎立之势，但在实际部署中面临各自的瓶颈：
-\begin{enumerate}
-    \item \textbf{计算机视觉（CV）：}虽具高分辨率，但对光照高度敏感，且在暗光或遮挡下鲁棒性极差，更重要的是其在家庭、医疗等私密空间存在天然的伦理与隐私壁垒。
-    \item \textbf{穿戴式设备：}虽然定位精度极高，但设备带来的物理束缚感违背了"自然交互"的初衷，且长期佩戴的舒适度与维护成本限制了其大规模民用。
-    \item \textbf{射频传感（雷达）}以毫米波（mmWave）多普勒雷达为代表的射频感知，凭借其全天候工作特性、穿透遮挡的物理能力，以及仅获取运动特征而不获取图像信息的天然隐私保护优势，在智能终端领域展现出显著的竞争优势。
-\end{enumerate}
+\bullshit
 
-得益于半导体工艺向28nm及以下节点的迈进，毫米波雷达已实现超大规模集成（SoC）与微型化，Google Soli项目的落地标志着该技术已具备进入消费电子市场的技术可行性。雷达利用多普勒效应捕获手指微小运动带来的频率偏移与相位调制。然而，在真实交互场景中，手部作为非刚体目标，其回波信号中蕴含的微多普勒特征极其微弱且易受躯干反射、环境噪声及多径效应的严重干扰。
+\paragraph{小标题}
 
-因此，如何结合先进的信号处理技术（如RDM生成、AoA估计）与深度学习模型，从复杂的原始信号中提取稳健的手势语义，实现低延迟、高精度的实时识别，是当前学术界与工业界共同关注的核心课题，也是本研究展开的基石。
+\bullshit
 
-\subsubsection{本研究的意义和目的}
-本研究旨在针对当前非接触式人机交互中的瓶颈问题，基于毫米波多普勒雷达传感技术，构建一套高鲁棒性、高实时性的手势识别系统。本研究的核心目的是针对智能终端（如智能手机、平板电脑）的近距离交互场景，在基础上系统性实现并优化一种基于确定性多普勒信号分类的毫米波雷达手势识别系统。
+\subsubsection{本研究的目的和意义}
 
-首先，本研究旨在突破传统"点散射模型"在近场环境下的局限性。在菲涅尔近场区（Fresnel near-field range）内，手部不再能被简单视为一个质点，其复杂的生理结构和不规则的运动轨迹会导致严重的相位畸变\cite{mainpaper}。本研究通过引入 米氏散射（Mie scattering）理论 对手掌进行重新建模，旨在揭示手部精细动作与回波相位演变之间的确定性物理关联。
+\bullshit
 
-其次，本研究致力于实现一个端到端（End-to-End）的识别流水线（Pipeline）。这包括从底层的硬件配置、数据采集、模数转换（ADC），到中层的数字信号处理（DSP）以及高层的深度学习分类预测。通过这一流水线的建立，本研究将探索如何利用 动态反射散射技术（DRS） 提取鲁棒的手势特征，从而解决雷达感测中常见的强背景杂波掩盖微弱手势信号的问题。
-
-最后，本研究拟解决轻量化模型在嵌入式端侧的实时推理问题。通过优化神经网络架构（如卷积层与全连接层的参数平衡），实现在资源受限的 SoC 平台上进行毫秒级响应，确保交互的流畅性。
-
-本研究不仅具有深厚的学术探索价值，更具备迫切的现实应用意义，具体体现在以下三个维度：
-\begin{enumerate}
-    \item \textbf{学术层面：}完善非刚体目标的近场感知理论 现有的雷达识别研究多侧重于远距离的大动作分类，而本研究聚焦于近场微手势。通过将手掌视为米氏散射体，本研究为非刚体目标的电磁建模提供了新的视角。这有助于完善雷达信号处理中关于"确定性多普勒信号"的理论框架，为后续研究在复杂多径环境下提取高纯度运动特征提供参考依据。
-    \item \textbf{技术层面：}平衡识别精度、鲁棒性与计算负载 传统深度学习方案具有严重的"数据饥渴"特性，且易受特定用户特征的影响。本研究通过物理建模引导的特征提取（DRS 技术），降低了模型对海量标注数据的依赖。这种"物理模型+深度学习"的结合方式，不仅能提升系统在真实噪音扰动下的鲁棒性，还显著降低了后端分类器的计算负荷，为毫米波雷达技术在移动终端的常态化部署铺平了道路。
-    \item \textbf{社会应用层面：}重塑自然、私密且安全的交互范式 毫米波雷达具备"全天候、非接触、非成像"的独特优势。相比于计算机视觉方案，雷达方案仅捕获运动包络而不获取图像信息，从物理层面上规避了隐私泄露风险。系统可在暗光、烟雾或存在视距遮挡的复杂场景下稳定工作。这种基于自然手势的交互方式，能有效解决医疗手术、车载驾驶等特定场景下物理接触带来的风险，极大地提升了人机交互的自由度与效率。
-\end{enumerate}
-
-综上所述，本研究通过对前沿雷达感知框架的基础实现并优化，力求在复杂的物理世界与精准的数字指令之间建立一条稳健的感知链路，对于推动下一代自然用户界面（NUI）的发展具有重要的学术与应用参考价值。
-
+\newpage
 \subsection{论文的主要内容和技术路线}
 
+\bullshit
+
 \subsubsection{主要研究内容}
-拟设计并实现一套面向智能终端的毫米波多普勒雷达手势识别系统，主要研究工作从雷达信号建模、特征提取、深度学习分类器设计以及系统鲁棒性验证四个方面展开。本研究设计的系统囊括从物理世界数据采集、模数转换和分类预测结果的整个流水线（pipeline）。我们主要需要解决以下重要问题：
-\begin{enumerate}
-    \item \textbf{数据传感的鲁棒性：}如文献综述中，Zhang et al.团队提出：主流的毫米波微多普勒识别方法存在显著噪音扰动和手掌肌肤纹理散射的问题\cite{mainpaper}，我们将采用动态反射散射技术（DRS），将人类手掌视为米氏散射体（Mie scatter），而非传统的点源模型，并重点研究在菲涅尔近场区（Fresnel near-field range）内，如何通过确定性多普勒信号的分类来抵消环境杂波的影响，从而提升系统在智能设备近距离交互中的感知稳健性。
-    \item \textbf{数据传输的硬件层面支持：}设计低通滤波和ADC电路，并编写MCU的控制逻辑作为数据流的传输环节，将采样得到的物理世界信息加工处理，方便后续数据的分类和训练。
-    \item \textbf{面向智能终端的应用场景要求系统具备极低的响应延迟：}本研究拟解决如何在保证高识别率的前提下，对深度学习模型进行轻量化剪枝与算子优化。重点研究如何利用低复杂度的分类算法（如 SVM 或轻量化 CNN）处理经由 DRS 技术提取的确定性多普勒序列，使整个识别流水线（Pipeline）能在功耗受限的移动端 SoC 上实现实时闭环。
-\end{enumerate}
+
+\bullshit
 
 \subsubsection{技术路线}
-\paragraph{雷达信号建模}
-对于第 $i$ 个 TDM 接收通道，其数字基带 I/Q 信号可建模为
-\begin{equation}
-\begin{aligned}
-I_i[n] &= A_{I,i}[n]\cos(\Phi_i[n]) + dc_{I,i} + n_{I,i}[n],\\
-Q_i[n] &= A_{Q,i}[n]\sin(\Phi_i[n]) + dc_{Q,i} + n_{Q,i}[n],
-\end{aligned}
-\end{equation}
-其中 $A_{I,i}[n],A_{Q,i}[n]$ 表示随时间缓慢变化的幅度项，$dc_{I,i},dc_{Q,i}$ 为直流偏置，$n_{I,i}[n],n_{Q,i}[n]$ 为噪声项，而 $\Phi_i[n]$ 为多普勒相位。与幅度相比，多普勒相位直接由电磁波传播路径长度变化决定，因此是描述手势运动的关键信息。
 
-离散时间下，多普勒相位可以表示为相位增量的累积形式
-\begin{equation}
-\Phi_i[n] = \Phi_i[0] + \sum_{j=1}^{n}\Delta\Phi_i[j].
-\end{equation}
-为了从 I/Q 信号中稳定地提取相位增量 $\Delta\Phi_i[j]$，并抑制幅度波动的影响，采用反正弦（arcsine）解调算法，其表达式为
-\begin{equation}
-\Delta \Phi_i[j]
-=
-\arcsin
-\frac{I_i[j]Q_i[j+1]-I_i[j+1]Q_i[j]}
-{\sqrt{I_i^2[j+1]+Q_i^2[j+1]}\sqrt{I_i^2[j]+Q_i^2[j]}}.
-\end{equation}
-该公式利用归一化后的 I/Q 叉乘关系，使提取的结果主要反映相位变化而非幅度变化，从而得到与目标运动高度相关的相位序列。
-
-在 5.8\,GHz 频段下，电磁波波长与人手尺寸处于同一量级，手部散射属于 Mie 散射并发生在 Fresnel 近场区域，不能简单视为点目标散射。为获得稳定且可重复的相位响应，将手势规范为平面手掌，并将其近似为一个导体矩形孔径。在 $y$ 极化入射下，孔径上感生的等效表面电流沿极化方向呈正弦分布，可表示为
-\begin{equation}
-J(\zeta,\xi)= I_0\sin\!\left[k\left(\frac{l}{2}-|\xi|\right)\right],
-\end{equation}
-
-其中 $(\zeta,\xi)$ 为孔径局部坐标，$l$ 为孔径沿极化方向的尺寸，$k$ 为波数。孔径上的每一微元电流可等效为 $y$ 极化赫兹偶极子，其在方向 $(r,\theta,\phi)$ 上产生的微分散射场为
-\begin{equation}
-\mathrm{d}E_y
-=
--\frac{jk\eta_0}{4\pi r}
-J(\zeta,\xi)e^{-jkr}
-\left(\cos^2\theta\sin^2\phi+\cos^2\phi\right)
-\mathrm{d}\zeta\,\mathrm{d}\xi.
-\end{equation}
-
-接收天线处的总散射电场由对整个孔径的积分得到
-\begin{equation}
-E_R
-=
-\int_{-l/2}^{l/2}\int_{-w/2}^{w/2}
-G_R(\theta_R,\phi_R)\,\mathrm{d}E_y,
-\end{equation}
-
-其中 $G_R(\theta_R,\phi_R)$ 为接收天线方向图。该近场散射模型表明，对于沿 $\pm x$、$\pm y$ 或 $\pm z$ 方向的规范手势，接收信号的相位响应在主瓣范围内呈现近似平坦特性，从而使相位随手部位移变化表现为准线性且可重复的函数形式，这是后续"确定性多普勒相位"的物理基础。
-
-在几何层面，SIMO 多普勒雷达系统可等效为多个共享同一发射端的双基地雷达。设目标在时刻 $t$ 的位置为 $(x_S,y_S,z_S)$，则双基地往返距离为
-\begin{equation}
-r(t)=|\mathbf{r}_T(t)|+|\mathbf{r}_R(t)|,
-\end{equation}
-
-其中 $\mathbf{r}_T(t)$ 和 $\mathbf{r}_R(t)$ 分别表示目标到发射端和接收端的距离向量。若目标以速度 $\mathbf{v}(t)$ 运动，则往返距离的时间导数可写为
-\begin{equation}
-\frac{\mathrm{d}r(t)}{\mathrm{d}t}
-=
-\mathbf{v}(t)\cdot\hat{\mathbf{r}}_T
--
-\mathbf{v}(t)\cdot\hat{\mathbf{r}}_R
-=
-|v_T(t)|-|v_R(t)|.
-\end{equation}
-
-根据多普勒效应，瞬时多普勒频移为
-\begin{equation}
-f_d(t)=\frac{|v_R(t)|-|v_T(t)|}{c}f_c,
-\end{equation}
-
-其中 $f_c$ 为载频，$c$ 为光速。对多普勒频移随时间积分即可得到多普勒相位，由此可建立路径长度与相位之间的等价关系
-\begin{equation}
-r(t) = -\frac{c}{2\pi f_c}\,\Phi(t).
-\end{equation}
-
-该关系清晰地表明，多普勒相位 $\Phi(t)$ 本质上编码了目标往返距离的变化过程，从而直接反映了手势的几何运动轨迹。
-
-在 SIMO 架构下，不同接收天线对应不同的双基地几何关系，因此同一手势在各通道中会产生形态相似但时间位置不同的相位曲线 $\Phi_i(t)$。对于规范定义的单向手势，实验与理论分析均表明 $-\Phi_i(t)$ 通常呈凸形，并且仅包含一个显著的最小值。为消除手势执行速度的影响，将每段手势在时间轴上归一化到区间 $(0,1)$，并对 $-\Phi_i(t)$ 进行多项式拟合以抑制噪声，然后提取每个通道相位最小值出现的归一化时刻 $t_{m,i}$，构造特征向量
-\begin{equation}
-\mathbf{t}_m=(t_{m,1},t_{m,2},\ldots,t_{m,M}).
-\end{equation}
-
-该特征向量刻画了不同接收通道之间相位响应的相对时序结构，对手势高度、速度以及个体差异具有较强鲁棒性。
-
-综上所述，通过
-\begin{equation}
-(I/Q)\ \rightarrow\ \Phi_i(t)\ \rightarrow\ \text{多通道几何差异}\ \rightarrow\ \mathbf{t}_m
-\end{equation}
-的推理链条，将高维连续时间信号压缩为低维、可解释且物理意义明确的确定性特征，从而能够利用轻量级分类器实现高精度、低样本复杂度的手势识别。
-
-\paragraph{神经网络建模}
-在雷达手势识别任务中，可将"手势"视为一个监督学习的多分类问题：给定某一时间窗口内的雷达观测序列（由基带 I/Q 或由相位序列派生的特征），预测其对应的手势类别标签。设手势类别集合为 $\mathcal{C}=\{1,2,\dots,C\}$，训练数据集为
-\begin{equation}
-\mathcal{D}=\{(\mathbf{x}^{(n)},y^{(n)})\}_{n=1}^{N},\qquad y^{(n)}\in\mathcal{C}.
-\end{equation}
-其中 $\mathbf{x}$ 为输入特征，可由雷达信号处理模块输出。针对本文"确定性多普勒"建模思路，常用的神经网络输入有两类：低维确定性特征（最小值时刻向量）与高维时频图（谱图）。
-
-若采用"确定性多通道最小值时刻"作为输入，则对 $M$ 个接收通道，在对每段手势进行时间归一化与平滑拟合后，可提取每个通道的相位最小值出现时刻 $t_{m,i}\in(0,1)$，并组成向量
-\begin{equation}
-\mathbf{x}=\mathbf{t}_m=(t_{m,1},t_{m,2},\dots,t_{m,M})^\top\in\mathbb{R}^{M}.
-\end{equation}
-
-此时可用一个多层感知机（MLP）作为分类器 $f_\theta:\mathbb{R}^{M}\to\mathbb{R}^{C}$，其前向传播可写为
-\begin{equation}
-\mathbf{h}_0=\mathbf{x},\qquad
-\mathbf{h}_\ell=\sigma(\mathbf{W}_\ell \mathbf{h}_{\ell-1}+\mathbf{b}_\ell)\ \ (\ell=1,\dots,L),
-\end{equation}
-\begin{equation}
-\mathbf{z}=\mathbf{W}_{L+1}\mathbf{h}_L+\mathbf{b}_{L+1}\in\mathbb{R}^{C},
-\end{equation}
-
-其中 $\sigma(\cdot)$ 为非线性激活函数（如 ReLU / GELU），$\theta=\{\mathbf{W}_\ell,\mathbf{b}_\ell\}$ 为可学习参数，$\mathbf{z}$ 为 logits。预测分布由 softmax 给出：
-\begin{equation}
-p_\theta(y=c\mid \mathbf{x})=\frac{\exp(z_c)}{\sum_{k=1}^{C}\exp(z_k)}.
-\end{equation}
-
-训练目标采用多分类交叉熵（可带正则化）：
-\begin{equation}
-\mathcal{L}(\theta)=\frac{1}{N}\sum_{n=1}^{N}\Big(-\log p_\theta\big(y^{(n)}\mid \mathbf{x}^{(n)}\big)\Big)\ +\ \lambda\|\theta\|_2^2.
-\end{equation}
-
-推理阶段输出类别为
-\begin{equation}
-\hat{y}=\arg\max_{c\in\mathcal{C}}\, p_\theta(y=c\mid \mathbf{x}).
-\end{equation}
-
-由于输入维度 $M$ 很小（例如 $M=3$），该 MLP 本质上是一个"用神经网络替代线性/核方法分类器"的建模方式，优点是实现简单、训练开销小、对小样本更友好，且与确定性特征的物理可解释性相一致。
-
-若采用时频谱图作为输入，则需先从多通道相位序列 $\Phi_i[n]$ 计算短时傅里叶变换（STFT）并构造谱图。对第 $i$ 个通道，设窗函数为 $w[\cdot]$、帧移为 $H$，则谱图可表示为
-\begin{equation}
-S_i[m,\omega]=\sum_{n} \Phi_i[n]\;w[n-mH]\;e^{-j\omega n},
-\qquad
-X_i[m,k]=\left|S_i[m,\omega_k]\right|^2.
-\end{equation}
-
-将 $M$ 个通道的谱图堆叠为张量输入（可视为多通道"图像"）：
-\begin{equation}
-\mathbf{X}\in\mathbb{R}^{M\times T\times F},
-\end{equation}
-
-其中 $T$ 为时间帧数、$F$ 为频点数。然后使用卷积神经网络（CNN）分类器 $g_\theta:\mathbb{R}^{M\times T\times F}\to\mathbb{R}^{C}$：
-\begin{equation}
-\mathbf{U}_0=\mathbf{X},\qquad
-\mathbf{U}_\ell=\sigma\!\big(\mathrm{BN}(\mathrm{Conv}_\ell(\mathbf{U}_{\ell-1}))\big)\ \ (\ell=1,\dots,L),
-\end{equation}
-\begin{equation}
-\mathbf{v}=\mathrm{Pool}(\mathbf{U}_L),\qquad
-\mathbf{z}=\mathbf{W}\mathbf{v}+\mathbf{b}\in\mathbb{R}^{C},
-\end{equation}
-
-并同样通过 softmax 得到 $p_\theta(y\mid\mathbf{X})$，用交叉熵最小化
-\begin{equation}
-\mathcal{L}(\theta)=\frac{1}{N}\sum_{n=1}^{N}\Big(-\log p_\theta\big(y^{(n)}\mid \mathbf{X}^{(n)}\big)\Big)+\lambda\|\theta\|_2^2.
-\end{equation}
-
-该 CNN 建模能够直接从高维谱图中学习判别模式，但通常需要更大数据量与更高训练成本；相比之下，基于 $\mathbf{t}_m$ 的低维 MLP 更贴合"确定性多普勒特征"的小样本设定。
-
-为增强跨被试泛化能力，可引入特征标准化与数据增强。对低维特征可做
-\begin{equation}
-\tilde{\mathbf{x}}=\frac{\mathbf{x}-\boldsymbol{\mu}}{\boldsymbol{\sigma}},
-\end{equation}
-
-对谱图可做幅度归一化、随机时间裁剪、随机噪声扰动等。训练时可采用小批量优化（Adam\cite{kingma2017adammethodstochasticoptimization}/SGD\cite{li2023stochasticgradientdescentviewpoint}）：
-\begin{equation}
-\theta\leftarrow \theta-\eta\nabla_\theta \mathcal{L}(\theta),
-\end{equation}
-
-其中 $\eta$ 为学习率。最终，神经网络模型完成从"雷达观测"到"手势类别"的端到端映射，并可根据输入特征选择低维 MLP（确定性特征）或 CNN（谱图特征）两种实现路径。
-
+\bullshit
 
 \subsubsection{可行性分析}
-调频连续波（FMCW）雷达在测距与测速领域的物理机制已极其成熟。特别是 Zhang et al.团队提出的动态反射散射（DRS）技术\cite{mainpaper}，为近场环境下的非刚体手势建模提供了坚实的数学框架。通过将手掌定义为米氏散射体（Mie scatterer），能够有效解释近场菲涅尔区内的相位调制规律。前期对确定性多普勒信号（Deterministic Doppler Signals）的推导证明，通过捕捉相位的导数关系，可以稳定提取出手势的特征向量，这为本课题的在经典确定性多普勒建模框架基础上进行系统化实现与工程优化工作提供了核心理论指引。
 
-与此同时地，当前半导体工艺的跨越式发展为本研究提供了可靠的硬件载体。以英飞凌（Infineon）BGT60TR13C 为代表的 60GHz 毫米波雷达 SoC 已经实现了超大规模集成，能够提供高达 4GHz 的扫频带宽，确保了厘米级的距离分辨率；现代嵌入式微控制器（如 Cortex-M55 核心）集成了高性能 ADC 模块与硬件加速器，采样率可达 40kHz 以上，完全满足手势信号的 Nyquist 采样需求。
+\bullshit
 
-在算法层面，轻量化深度学习与信号处理库的普及大幅降低了开发门槛:现有的数字信号处理（DSP）框架可以高效实现 2D-FFT、STFT 以及 MTI 滤波等预处理步骤，从而快速生成高质量的距离-多普勒图（RDM）和微多普勒谱图。借助 TensorFlow 或 PyTorch 等成熟工具，能够快速构建并训练轻量化神经网络（如结合了 CBAM 注意力机制的模型），实现对手势语义的端到端识别。Zhang 等人的研究已给出明确的参数配置建议（如 32 帧/秒的帧率、线性化 Chirp 设计等），这为本研究在初期调试阶段规避系统性错误、快速进入算法优化阶段提供了宝贵的工程参考。
-
+\newpage
 \subsection{研究计划进度安排及预期目标}
 
+\bullshit
+
 \subsubsection{进度安排}
-在该研究项目中我们的时间规划与安排如表\ref{tab:time_schedule_pro}所示。
 
-\begin{table}[htbp]
-    \centering
-    \caption{\bfseries 研究进度安排与时间规划}
-    \vspace{3mm}
-    \renewcommand{\arraystretch}{2.2} % 极大地增加行高，保持垂直方向的呼吸感
-    \small
-    \begin{tabularx}{\textwidth}{@{} l p{4.5cm} X @{}} % @{} 去除首尾边距，使左右平衡
-        \toprule[1.5pt]
-        \textbf{时间区间} & \textbf{研究阶段} & \textbf{关键任务与预期成果} \\
-        \midrule
-
-        2025.12 -- 2026.01.10 &
-        \textbf{文献调研与开题报告} &
-        分析 Zhang et al. 论文核心架构，完成基于确定性多普勒信号分类的开题论证。 \\
-
-        2026.01.11 -- 2026.02.15 &
-        \textbf{物理建模与数值仿真} &
-        构建菲涅尔近场区手部 Mie 散射模型，利用仿真获取 DRS 特征模式。 \\
-
-        2026.02.16 -- 2026.03.10 &
-        \textbf{硬件链路与数据采集} &
-        配置雷达 $F_s \ge 40$kHz 采样率链路，构建包含非刚体微动特征的实验数据库。 \\
-
-        2026.03.11 -- 2026.04.10 &
-        \textbf{算法优化与系统部署} &
-        训练轻量化神经网络模型，完成全流水线在嵌入式智能终端 SoC 的移植与实时测试。 \\
-
-        2026.04.11 -- 2026.05.20 &
-        \textbf{实验评估与论文撰写} &
-        进行跨场景鲁棒性实验，对比射频方案与视觉方案，完成毕业论文撰写及答辩工作。 \\
-
-        \bottomrule[1.5pt]
-    \end{tabularx}
-    \label{tab:time_schedule_pro}
-\end{table}
+\bullshit
 
 \subsubsection{预期目标}
-本研究预期通过对毫米波雷达手势识别全流水线的基础改进与优化，达成以下具体目标：
 
-\begin{enumerate}
-    \item 预期建立一套基于米氏散射（Mie scattering）理论的手部电磁模型，准确描述在菲涅尔近场区内手掌运动产生的确定性多普勒相位调制规律。通过物理仿真验证动态反射散射（DRS）特征的有效性，为消除环境多径干扰提供物理层依据。
-    \item 预期完成一套集成 ADC 采样、数字信号处理及深度学习预测的实时手势识别系统。系统需在硬件链路端实现高于 40kHz 的稳定采样，并提出在算法端实现对"滑动"、"推压"等典型微手势的精度分类。目标是将系统端到端响应延迟控制在 200ms 以内，满足实时交互的需求。
-    \item 预期证明该系统在暗光环境、视距（LoS）部分遮挡及存在显示器电磁噪声干扰的情况下，识别准确率显著优于传统视觉方案。最终将轻量化神经网络成功部署于嵌入式 SoC 平台，验证其在移动终端侧低功耗运行的可行性，为下一代无感、私密的人机交互接口提供技术范式。
-\end{enumerate}
+\bullshit
+
+这是一个引用示例\cite{vaswani2017attention}。
 
 % 参考文献
 {
